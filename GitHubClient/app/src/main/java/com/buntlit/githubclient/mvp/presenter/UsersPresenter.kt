@@ -1,5 +1,6 @@
 package com.buntlit.githubclient.mvp.presenter
 
+import android.annotation.SuppressLint
 import com.buntlit.githubclient.mvp.model.entity.GitHubUser
 import com.buntlit.githubclient.mvp.model.entity.GitHubUsersRepo
 import com.buntlit.githubclient.mvp.presenter.list.IUserListPresenter
@@ -41,9 +42,11 @@ class UsersPresenter(private val usersRepo: GitHubUsersRepo, private val router:
         }
     }
 
+    @SuppressLint("CheckResult")
     private fun loadData() {
-        val users = usersRepo.getUsers()
-        usersListPresenter.users.addAll(users)
+        usersRepo.getUsers().subscribe { user ->
+            usersListPresenter.users.add(user)
+        }
         viewState.updateList()
     }
 
