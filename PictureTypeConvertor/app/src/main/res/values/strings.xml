@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Picture Type Convertor</string>
+    <string name="button_choose_picture">Choose picture</string>
+</resources>
