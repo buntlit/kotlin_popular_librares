@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Pop Lib</string>
+    <string name="counter_one">Счётчик 1</string>
+    <string name="counter_two">Счётчик 2</string>
+    <string name="counter_three">Счётчик 3</string>
+    <string name="start_count">0</string>
+</resources>
