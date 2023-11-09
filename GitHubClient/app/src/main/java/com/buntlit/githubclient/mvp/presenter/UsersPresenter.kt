@@ -43,8 +43,8 @@ class UsersPresenter(
 
         usersListPresenter.itemClickListener = { itemView ->
             router.navigateTo(
-                Screens.UserScreens.userFragment(
-                    usersListPresenter.users[itemView.pos]
+                Screens.UserScreens.userRepositoriesFragment(
+                    usersListPresenter.users[itemView.pos].reposUrl.toString()
                 )
             )
         }

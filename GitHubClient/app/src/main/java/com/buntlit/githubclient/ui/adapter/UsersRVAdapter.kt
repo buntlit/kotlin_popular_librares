@@ -8,7 +8,6 @@ import com.buntlit.githubclient.databinding.ItemUserBinding
 import com.buntlit.githubclient.mvp.model.image.IImageLoader
 import com.buntlit.githubclient.mvp.presenter.list.IUserListPresenter
 import com.buntlit.githubclient.mvp.view.list.UserItemView
-import com.buntlit.githubclient.ui.image.GlideImageLoader
 
 class UsersRVAdapter(
     private val presenter: IUserListPresenter,
