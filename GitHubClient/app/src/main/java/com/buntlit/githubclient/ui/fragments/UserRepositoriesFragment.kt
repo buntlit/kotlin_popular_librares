@@ -10,32 +10,40 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.buntlit.githubclient.ApiHolder
 import com.buntlit.githubclient.App
 import com.buntlit.githubclient.databinding.FragmentUserRepositoriesBinding
+import com.buntlit.githubclient.mvp.model.entity.GitHubUser
+import com.buntlit.githubclient.mvp.model.entity.room.Database
 import com.buntlit.githubclient.mvp.model.repo.retrofit.RetrofitGitHubRepositoriesRepo
 import com.buntlit.githubclient.mvp.presenter.UserRepositoriesPresenter
 import com.buntlit.githubclient.mvp.view.UserRepositoriesView
 import com.buntlit.githubclient.ui.BackButtonListener
 import com.buntlit.githubclient.ui.adapter.RepositoriesRVAdapter
+import com.buntlit.githubclient.ui.network.AndroidNetworkStatus
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 
-class UserRepositoriesRepositoriesFragment : MvpAppCompatFragment(), UserRepositoriesView,
+class UserRepositoriesFragment : MvpAppCompatFragment(), UserRepositoriesView,
     BackButtonListener {
 
     private var binding: FragmentUserRepositoriesBinding? = null
     private lateinit var adapter: RepositoriesRVAdapter
-    private val url: String by lazy {
+    private val user: GitHubUser by lazy {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            arguments?.getString(USER_KEY).toString()
+            arguments?.getParcelable(USER_KEY,GitHubUser::class.java) as GitHubUser
         } else {
             @Suppress("DEPRECATION")
-            arguments?.getString(USER_KEY).toString()
+            arguments?.getParcelable(USER_KEY)!!
         }
     }
     private val presenter by moxyPresenter {
         UserRepositoriesPresenter(
             AndroidSchedulers.mainThread(),
-            RetrofitGitHubRepositoriesRepo(ApiHolder().api, url),
+            user,
+            RetrofitGitHubRepositoriesRepo(
+                ApiHolder().api,
+                AndroidNetworkStatus(App.INSTANCE),
+                Database.getInstance()
+            ),
             App.INSTANCE.router
         )
     }
@@ -44,10 +52,10 @@ class UserRepositoriesRepositoriesFragment : MvpAppCompatFragment(), UserReposit
 
         private const val USER_KEY = "USER"
 
-        fun newInstance(repositoriesUrl: String): UserRepositoriesRepositoriesFragment {
-            val fragment = UserRepositoriesRepositoriesFragment()
+        fun newInstance(user: GitHubUser): UserRepositoriesFragment {
+            val fragment = UserRepositoriesFragment()
             val arguments = Bundle()
-            arguments.putString(USER_KEY, repositoriesUrl)
+            arguments.putParcelable(USER_KEY, user)
             fragment.arguments = arguments
             return fragment
         }

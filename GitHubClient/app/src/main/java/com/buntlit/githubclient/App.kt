@@ -1,6 +1,7 @@
 package com.buntlit.githubclient
 
 import android.app.Application
+import com.buntlit.githubclient.mvp.model.entity.room.Database
 import com.github.terrakok.cicerone.Cicerone
 
 class App : Application() {
@@ -15,6 +16,8 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         INSTANCE = this
+
+        Database.create(this)
     }
 
     val navigatorHolder

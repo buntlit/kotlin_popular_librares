@@ -2,6 +2,7 @@ package com.buntlit.githubclient.mvp.presenter
 
 import android.annotation.SuppressLint
 import com.buntlit.githubclient.mvp.model.entity.GitHubRepository
+import com.buntlit.githubclient.mvp.model.entity.GitHubUser
 import com.buntlit.githubclient.mvp.model.repo.IGitHubRepositoriesRepo
 import com.buntlit.githubclient.mvp.presenter.list.IRepositoryListPresenter
 import com.buntlit.githubclient.mvp.view.UserRepositoriesView
@@ -13,6 +14,7 @@ import moxy.MvpPresenter
 
 class UserRepositoriesPresenter(
     private val mainThreadScheduler: Scheduler,
+    private val user: GitHubUser,
     private val userRepositoriesRepo: IGitHubRepositoriesRepo,
     private val router: Router
 ) :
@@ -51,10 +53,11 @@ class UserRepositoriesPresenter(
 
     @SuppressLint("CheckResult")
     private fun loadData() {
-        userRepositoriesRepo.getRepositories()
+        userRepositoriesRepo.getRepositories(user)
             .observeOn(mainThreadScheduler)
             .subscribe(
                 { repositories ->
+                    userRepositoriesListPresenter.repositories.clear()
                     userRepositoriesListPresenter.repositories.addAll(repositories)
                     viewState.updateList()
                 }, {

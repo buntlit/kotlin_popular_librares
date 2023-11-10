@@ -25,7 +25,7 @@ class UsersPresenter(
 
         override fun bindView(view: UserItemView) {
             val user = users[view.pos]
-            user.login?.let { view.setLogin(it) }
+            user.login.let { view.setLogin(it) }
             user.avatarUrl?.let { view.loadAvatar(it) }
         }
 
@@ -44,7 +44,7 @@ class UsersPresenter(
         usersListPresenter.itemClickListener = { itemView ->
             router.navigateTo(
                 Screens.UserScreens.userRepositoriesFragment(
-                    usersListPresenter.users[itemView.pos].reposUrl.toString()
+                    usersListPresenter.users[itemView.pos]
                 )
             )
         }

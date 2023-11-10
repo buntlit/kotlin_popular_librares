@@ -10,11 +10,10 @@ class RepositoryPresenter(private val repository: GitHubRepository?, private val
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
         viewState.init()
+        repository?.let { viewState.setId(it.id) }
+        repository?.let { viewState.setName(it.name.toString()) }
+        repository?.let { viewState.setForks(it.forksCount.toString()) }
     }
-
-    fun getRepositoryName() = repository?.name
-    fun getRepositoryId() = repository?.id
-    fun getRepositoryForksCount() = repository?.forksCount
 
     fun backPressed(): Boolean {
         router.exit()

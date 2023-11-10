@@ -50,13 +50,22 @@ class RepositoryFragment : MvpAppCompatFragment(), RepositoryView, BackButtonLis
     }
 
     override fun init() {
-        binding?.repositoryName?.text =  presenter.getRepositoryName()
-        binding?.repositoryId?.text = presenter.getRepositoryId()
-        binding?.repositoryForksCount?.text = presenter.getRepositoryForksCount().toString()
+    }
+
+    override fun setId(text: String) {
+        binding?.repositoryId?.text = text
+    }
+
+    override fun setName(text: String) {
+        binding?.repositoryName?.text = text
+    }
+
+    override fun setForks(text: String) {
+        binding?.repositoryForksCount?.text = text
     }
 
     override fun backPressed(): Boolean {
-       presenter.backPressed()
+        presenter.backPressed()
         return true
     }
 }

@@ -9,12 +9,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.buntlit.githubclient.ApiHolder
 import com.buntlit.githubclient.App
 import com.buntlit.githubclient.databinding.FragmentUsersBinding
+import com.buntlit.githubclient.mvp.model.entity.room.Database
 import com.buntlit.githubclient.mvp.model.repo.retrofit.RetrofitGitHubUsersRepo
 import com.buntlit.githubclient.mvp.presenter.UsersPresenter
 import com.buntlit.githubclient.mvp.view.UsersView
 import com.buntlit.githubclient.ui.BackButtonListener
 import com.buntlit.githubclient.ui.adapter.UsersRVAdapter
 import com.buntlit.githubclient.ui.image.GlideImageLoader
+import com.buntlit.githubclient.ui.network.AndroidNetworkStatus
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
@@ -26,7 +28,11 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
     private val presenter by moxyPresenter {
         UsersPresenter(
             AndroidSchedulers.mainThread(),
-            RetrofitGitHubUsersRepo(ApiHolder().api),
+            RetrofitGitHubUsersRepo(
+                ApiHolder().api,
+                AndroidNetworkStatus(App.INSTANCE),
+                Database.getInstance()
+            ),
             App.INSTANCE.router
         )
     }
