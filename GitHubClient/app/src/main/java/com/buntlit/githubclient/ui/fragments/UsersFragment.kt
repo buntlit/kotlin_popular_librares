@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.buntlit.githubclient.ApiHolder
 import com.buntlit.githubclient.App
 import com.buntlit.githubclient.databinding.FragmentUsersBinding
+import com.buntlit.githubclient.mvp.model.cache.room.RoomGitHubImagesCache
+import com.buntlit.githubclient.mvp.model.cache.room.RoomGitHubUsersCache
 import com.buntlit.githubclient.mvp.model.entity.room.Database
 import com.buntlit.githubclient.mvp.model.repo.retrofit.RetrofitGitHubUsersRepo
 import com.buntlit.githubclient.mvp.presenter.UsersPresenter
@@ -31,7 +33,7 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
             RetrofitGitHubUsersRepo(
                 ApiHolder().api,
                 AndroidNetworkStatus(App.INSTANCE),
-                Database.getInstance()
+                RoomGitHubUsersCache(Database.getInstance())
             ),
             App.INSTANCE.router
         )
@@ -52,7 +54,7 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
 
     override fun init() {
         binding?.rvUsers?.layoutManager = LinearLayoutManager(requireContext())
-        adapter = UsersRVAdapter(presenter.usersListPresenter, GlideImageLoader())
+        adapter = UsersRVAdapter(presenter.usersListPresenter, GlideImageLoader(RoomGitHubImagesCache(Database.getInstance())))
         binding?.rvUsers?.adapter = adapter
     }
 

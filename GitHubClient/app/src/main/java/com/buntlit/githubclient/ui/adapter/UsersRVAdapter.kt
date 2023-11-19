@@ -22,7 +22,7 @@ class UsersRVAdapter(
         }
 
         override fun loadAvatar(url: String) = with(binding) {
-            imageLoader.loadInto(url, ivAvatar)
+            imageLoader.loadImage(url, ivAvatar)
         }
 
         override var pos = -1

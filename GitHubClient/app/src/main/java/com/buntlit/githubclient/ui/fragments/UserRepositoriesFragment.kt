@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.buntlit.githubclient.ApiHolder
 import com.buntlit.githubclient.App
 import com.buntlit.githubclient.databinding.FragmentUserRepositoriesBinding
+import com.buntlit.githubclient.mvp.model.cache.room.RoomGitHubRepositoriesCache
 import com.buntlit.githubclient.mvp.model.entity.GitHubUser
 import com.buntlit.githubclient.mvp.model.entity.room.Database
 import com.buntlit.githubclient.mvp.model.repo.retrofit.RetrofitGitHubRepositoriesRepo
@@ -42,7 +43,7 @@ class UserRepositoriesFragment : MvpAppCompatFragment(), UserRepositoriesView,
             RetrofitGitHubRepositoriesRepo(
                 ApiHolder().api,
                 AndroidNetworkStatus(App.INSTANCE),
-                Database.getInstance()
+                RoomGitHubRepositoriesCache(Database.getInstance())
             ),
             App.INSTANCE.router
         )
