@@ -22,6 +22,7 @@ import com.buntlit.githubclient.ui.network.AndroidNetworkStatus
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
+import javax.inject.Inject
 
 class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
 
@@ -29,18 +30,18 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
     private lateinit var adapter: UsersRVAdapter
     private val presenter by moxyPresenter {
         UsersPresenter(
-            AndroidSchedulers.mainThread(),
-            RetrofitGitHubUsersRepo(
-                ApiHolder().api,
-                AndroidNetworkStatus(App.INSTANCE),
-                RoomGitHubUsersCache(Database.getInstance())
-            ),
-            App.INSTANCE.router
-        )
+            AndroidSchedulers.mainThread()
+        ).apply {
+            App.INSTANCE.appComponent.inject(this)
+        }
     }
 
+    @Inject
+    lateinit var database: Database
     companion object {
-        fun newInstance() = UsersFragment()
+        fun newInstance() = UsersFragment().apply {
+            App.INSTANCE.appComponent.inject(this)
+        }
     }
 
     override fun onCreateView(
@@ -54,7 +55,7 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
 
     override fun init() {
         binding?.rvUsers?.layoutManager = LinearLayoutManager(requireContext())
-        adapter = UsersRVAdapter(presenter.usersListPresenter, GlideImageLoader(RoomGitHubImagesCache(Database.getInstance())))
+        adapter = UsersRVAdapter(presenter.usersListPresenter, GlideImageLoader(RoomGitHubImagesCache(database)))
         binding?.rvUsers?.adapter = adapter
     }
 

@@ -1,12 +1,13 @@
 package com.buntlit.githubclient
 
 import android.app.Application
-import com.buntlit.githubclient.mvp.model.entity.room.Database
-import com.github.terrakok.cicerone.Cicerone
+import com.buntlit.githubclient.mvp.di.AppComponent
+import com.buntlit.githubclient.mvp.di.DaggerAppComponent
+import com.buntlit.githubclient.mvp.di.modules.AppModule
 
 class App : Application() {
 
-    private val cicerone = Cicerone.create()
+    lateinit var appComponent: AppComponent
 
     companion object {
         lateinit var INSTANCE: App
@@ -17,12 +18,8 @@ class App : Application() {
         super.onCreate()
         INSTANCE = this
 
-        Database.create(this)
+        appComponent = DaggerAppComponent.builder()
+            .appModule(AppModule(this))
+            .build()
     }
-
-    val navigatorHolder
-        get() = cicerone.getNavigatorHolder()
-
-    val router
-        get() = cicerone.router
-}
+ }

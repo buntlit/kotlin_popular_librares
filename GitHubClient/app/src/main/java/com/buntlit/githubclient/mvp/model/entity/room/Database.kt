@@ -1,7 +1,5 @@
 package com.buntlit.githubclient.mvp.model.entity.room
 
-import android.content.Context
-import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.buntlit.githubclient.mvp.model.entity.room.dao.ImageDao
 import com.buntlit.githubclient.mvp.model.entity.room.dao.RepositoryDao
@@ -17,15 +15,15 @@ abstract class Database : RoomDatabase() {
     abstract val imageDao: ImageDao
 
     companion object {
-        private const val DB_NAME = "database.db"
-        private var instance: Database? = null
+        const val DB_NAME = "database.db"
+//        private var instance: Database? = null
 
-        fun getInstance() = instance ?: throw RuntimeException("Data not created")
-
-        fun create(context: Context) {
-            if (instance == null) {
-                instance = Room.databaseBuilder(context!!, Database::class.java, DB_NAME).build()
-            }
-        }
+//        fun getInstance() = instance ?: throw RuntimeException("Data not created")
+//
+//        fun create(context: Context) {
+//            if (instance == null) {
+//                instance = Room.databaseBuilder(context!!, Database::class.java, DB_NAME).build()
+//            }
+//        }
     }
 }

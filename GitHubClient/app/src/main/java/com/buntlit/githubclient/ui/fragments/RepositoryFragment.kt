@@ -11,10 +11,15 @@ import com.buntlit.githubclient.mvp.model.entity.GitHubRepository
 import com.buntlit.githubclient.mvp.presenter.RepositoryPresenter
 import com.buntlit.githubclient.mvp.view.RepositoryView
 import com.buntlit.githubclient.ui.BackButtonListener
+import com.github.terrakok.cicerone.Router
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
+import javax.inject.Inject
 
 class RepositoryFragment : MvpAppCompatFragment(), RepositoryView, BackButtonListener {
+
+    @Inject
+    lateinit var router: Router
 
     private var binding: FragmentRepositoryBinding? = null
     private val repository: GitHubRepository? by lazy {
@@ -25,18 +30,18 @@ class RepositoryFragment : MvpAppCompatFragment(), RepositoryView, BackButtonLis
             arguments?.getParcelable(REPOSITORY_KEY)
         }
     }
-    private val presenter by moxyPresenter { RepositoryPresenter(repository, App.INSTANCE.router) }
+    private val presenter by moxyPresenter { RepositoryPresenter(repository, router) }
 
 
     companion object {
         private const val REPOSITORY_KEY = "REPO"
 
-        fun newInstance(repository: GitHubRepository): RepositoryFragment {
-            val fragment = RepositoryFragment()
-            val arguments = Bundle()
-            arguments.putParcelable(REPOSITORY_KEY, repository)
-            fragment.arguments = arguments
-            return fragment
+        fun newInstance(repository: GitHubRepository) = RepositoryFragment().apply {
+            arguments = Bundle().apply {
+                putParcelable(REPOSITORY_KEY, repository)
+            }
+
+            App.INSTANCE.appComponent.inject(this)
         }
     }
 

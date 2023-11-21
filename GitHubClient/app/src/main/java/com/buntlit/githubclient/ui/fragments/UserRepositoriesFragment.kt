@@ -19,12 +19,20 @@ import com.buntlit.githubclient.mvp.view.UserRepositoriesView
 import com.buntlit.githubclient.ui.BackButtonListener
 import com.buntlit.githubclient.ui.adapter.RepositoriesRVAdapter
 import com.buntlit.githubclient.ui.network.AndroidNetworkStatus
+import com.github.terrakok.cicerone.Router
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
+import javax.inject.Inject
 
 class UserRepositoriesFragment : MvpAppCompatFragment(), UserRepositoriesView,
     BackButtonListener {
+
+    @Inject
+    lateinit var router: Router
+
+    @Inject
+    lateinit var database: Database
 
     private var binding: FragmentUserRepositoriesBinding? = null
     private lateinit var adapter: RepositoriesRVAdapter
@@ -43,9 +51,9 @@ class UserRepositoriesFragment : MvpAppCompatFragment(), UserRepositoriesView,
             RetrofitGitHubRepositoriesRepo(
                 ApiHolder().api,
                 AndroidNetworkStatus(App.INSTANCE),
-                RoomGitHubRepositoriesCache(Database.getInstance())
+                RoomGitHubRepositoriesCache(database)
             ),
-            App.INSTANCE.router
+            router
         )
     }
 
@@ -53,12 +61,11 @@ class UserRepositoriesFragment : MvpAppCompatFragment(), UserRepositoriesView,
 
         private const val USER_KEY = "USER"
 
-        fun newInstance(user: GitHubUser): UserRepositoriesFragment {
-            val fragment = UserRepositoriesFragment()
-            val arguments = Bundle()
-            arguments.putParcelable(USER_KEY, user)
-            fragment.arguments = arguments
-            return fragment
+        fun newInstance(user: GitHubUser) = UserRepositoriesFragment().apply {
+            arguments = Bundle().apply {
+                putParcelable(USER_KEY, user)
+            }
+            App.INSTANCE.appComponent.inject(this)
         }
     }
 

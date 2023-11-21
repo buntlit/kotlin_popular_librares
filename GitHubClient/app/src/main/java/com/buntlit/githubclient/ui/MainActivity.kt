@@ -9,21 +9,32 @@ import com.buntlit.githubclient.databinding.ActivityMainBinding
 import com.buntlit.githubclient.mvp.presenter.MainPresenter
 import com.buntlit.githubclient.mvp.view.MainView
 import com.github.terrakok.cicerone.Navigator
+import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.androidx.AppNavigator
 import moxy.MvpAppCompatActivity
 import moxy.ktx.moxyPresenter
+import javax.inject.Inject
 
 class MainActivity : MvpAppCompatActivity(), MainView {
 
     private var binding: ActivityMainBinding? = null
-    private val presenter by moxyPresenter { MainPresenter(App.INSTANCE.router) }
-    private val navigatorHolder = App.INSTANCE.navigatorHolder
-    private lateinit var navigator : Navigator
+    private val presenter by moxyPresenter {
+        MainPresenter().apply {
+            App.INSTANCE.appComponent.inject(this)
+        }
+    }
+    @Inject
+    lateinit var navigatorHolder: NavigatorHolder
+
+    private lateinit var navigator: Navigator
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         navigator = AppNavigator(this, binding?.container?.id!!)
         setContentView(binding?.root)
+
+        App.INSTANCE.appComponent.inject(this)
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             onBackInvokedDispatcher.registerOnBackInvokedCallback(
                 OnBackInvokedDispatcher.PRIORITY_DEFAULT
@@ -35,7 +46,7 @@ class MainActivity : MvpAppCompatActivity(), MainView {
                 this,
                 object : OnBackPressedCallback(true) {
                     override fun handleOnBackPressed() {
-                       onBack()
+                        onBack()
                     }
                 })
         }
