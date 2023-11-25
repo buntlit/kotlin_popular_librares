@@ -3,7 +3,6 @@ package com.buntlit.githubclient.mvp.presenter
 import android.annotation.SuppressLint
 import com.buntlit.githubclient.mvp.model.entity.GitHubUser
 import com.buntlit.githubclient.mvp.model.repo.IGitHubUsersRepo
-import com.buntlit.githubclient.mvp.model.repo.retrofit.RetrofitGitHubUsersRepo
 import com.buntlit.githubclient.mvp.presenter.list.IUserListPresenter
 import com.buntlit.githubclient.mvp.view.UsersView
 import com.buntlit.githubclient.mvp.view.list.UserItemView
@@ -13,13 +12,14 @@ import io.reactivex.rxjava3.core.Scheduler
 import moxy.MvpPresenter
 import javax.inject.Inject
 
-class UsersPresenter(
-    private val mainThreadScheduler: Scheduler,
-) :
-    MvpPresenter<UsersView>() {
+class UsersPresenter : MvpPresenter<UsersView>() {
 
     @Inject
-    lateinit var usersRepo: RetrofitGitHubUsersRepo
+    lateinit var mainThreadScheduler: Scheduler
+
+    @Inject
+    lateinit var usersRepo: IGitHubUsersRepo
+
     @Inject
     lateinit var router: Router
 

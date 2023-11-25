@@ -6,9 +6,7 @@ import com.buntlit.githubclient.mvp.presenter.RepositoryPresenter
 import com.buntlit.githubclient.mvp.presenter.UserRepositoriesPresenter
 import com.buntlit.githubclient.mvp.presenter.UsersPresenter
 import com.buntlit.githubclient.ui.MainActivity
-import com.buntlit.githubclient.ui.fragments.RepositoryFragment
-import com.buntlit.githubclient.ui.fragments.UserRepositoriesFragment
-import com.buntlit.githubclient.ui.fragments.UsersFragment
+import com.buntlit.githubclient.ui.adapter.UsersRVAdapter
 import dagger.Component
 import javax.inject.Singleton
 
@@ -28,8 +26,5 @@ interface AppComponent {
     fun inject(usersPresenter: UsersPresenter)
     fun inject(usersRepositoryPresenter: UserRepositoriesPresenter)
     fun inject(repositoryPresenter: RepositoryPresenter)
-
-    fun inject(usersFragment: UsersFragment)
-    fun inject(userRepositoriesFragment: UserRepositoriesFragment)
-    fun inject(repositoryFragment: RepositoryFragment)
+    fun inject(usersRVAdapter: UsersRVAdapter)
 }

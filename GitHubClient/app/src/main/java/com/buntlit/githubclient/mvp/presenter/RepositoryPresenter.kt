@@ -4,8 +4,12 @@ import com.buntlit.githubclient.mvp.model.entity.GitHubRepository
 import com.buntlit.githubclient.mvp.view.RepositoryView
 import com.github.terrakok.cicerone.Router
 import moxy.MvpPresenter
+import javax.inject.Inject
 
-class RepositoryPresenter(private val repository: GitHubRepository?, private val router: Router): MvpPresenter<RepositoryView>() {
+class RepositoryPresenter(private val repository: GitHubRepository?): MvpPresenter<RepositoryView>() {
+
+    @Inject
+    lateinit var router: Router
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()

@@ -11,14 +11,18 @@ import com.buntlit.githubclient.navigation.Screens
 import com.github.terrakok.cicerone.Router
 import io.reactivex.rxjava3.core.Scheduler
 import moxy.MvpPresenter
+import javax.inject.Inject
 
 class UserRepositoriesPresenter(
-    private val mainThreadScheduler: Scheduler,
-    private val user: GitHubUser,
-    private val userRepositoriesRepo: IGitHubRepositoriesRepo,
-    private val router: Router
+    private val user: GitHubUser
 ) :
     MvpPresenter<UserRepositoriesView>() {
+    @Inject
+    lateinit var mainThreadScheduler: Scheduler
+    @Inject
+    lateinit var userRepositoriesRepo: IGitHubRepositoriesRepo
+    @Inject
+    lateinit var router: Router
 
     class RepositoriesListPresenter : IRepositoryListPresenter {
 

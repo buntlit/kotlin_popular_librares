@@ -1,6 +1,5 @@
 package com.buntlit.githubclient.mvp.model.entity.room
 
-import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
@@ -11,10 +10,11 @@ import androidx.room.PrimaryKey
         parentColumns = ["avatarUrl"],
         childColumns = ["imageUrl"],
         onDelete = ForeignKey.CASCADE
-    )]
+    )],
+    indices = [androidx.room.Index(value = ["imageUrl"], unique = true)]
 )
 class RoomGitHubImage(
     @PrimaryKey val path: String,
-    @ColumnInfo(index = true) val imageUrl: String
+    val imageUrl: String
 
 )

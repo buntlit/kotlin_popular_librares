@@ -28,7 +28,6 @@ class GlideImageLoader(private val cache: IGitHubImagesCache) : IImageLoader<Ima
             }, {
                 println("Error: ${it.message}")
                 loadImageToStore(url, container)
-//                loadInto(url, container)
             })
     }
 

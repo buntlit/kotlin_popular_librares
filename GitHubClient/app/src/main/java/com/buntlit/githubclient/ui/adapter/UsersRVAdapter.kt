@@ -8,12 +8,15 @@ import com.buntlit.githubclient.databinding.ItemUserBinding
 import com.buntlit.githubclient.mvp.model.image.IImageLoader
 import com.buntlit.githubclient.mvp.presenter.list.IUserListPresenter
 import com.buntlit.githubclient.mvp.view.list.UserItemView
+import javax.inject.Inject
 
 class UsersRVAdapter(
-    private val presenter: IUserListPresenter,
-    val imageLoader: IImageLoader<ImageView>
+    private val presenter: IUserListPresenter
 ) :
     RecyclerView.Adapter<UsersRVAdapter.ViewHolder>() {
+
+    @Inject
+    lateinit var imageLoader: IImageLoader<ImageView>
 
     inner class ViewHolder(private val binding: ItemUserBinding) :
         RecyclerView.ViewHolder(binding.root), UserItemView {
